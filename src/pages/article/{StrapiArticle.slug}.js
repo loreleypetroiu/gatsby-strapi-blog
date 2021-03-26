@@ -43,39 +43,46 @@ export const query = graphql`
 `;
 
 const Article = ({ data }) => {
-    const article = data.strapiArticle;
-    const seo = {
-        metaTitle: article.title,
-        metaDescription: article.description,
-        shareImage: article.image,
-        article: true,
-    };
+  const article = data.strapiArticle;
+  const seo = {
+    metaTitle: article.title,
+    metaDescription: article.description,
+    shareImage: article.image,
+    article: true,
+  };
 
-    return (
-        <Layout seo={seo}>
-            <Categories>
-                {
-                    article.categories.length > 0 && article.categories.map(category =>
-                        <li key={`categ-${category.slug}`}><Link to={`/category/${category.slug}`}>{category.name}</Link></li>
-                    )
-                }
-            </Categories>
-            <h1 className='text-center mb-1'>{article.title}</h1>
-            <AuthorInfo>
-                {
-                    article.author.picture &&
-                    <Img fixed={article.author.picture.childImageSharp.fixed} />
-                }
-                <div className='authorName'><Link to={`/writer/${article.author.slug}`}>{article.author.name}</Link></div>
-                <div className='publishedAt'>{dayjs(article.publishedAt).format('MMM D, YYYY')}</div>
-            </AuthorInfo>
+  return (
+    <Layout seo={seo}>
+      <Categories>
+        {
+          article.categories.length > 0 && article.categories.map(category =>
+            <li key={`categ-${category.slug}`}><Link to={`/category/${category.slug}`}>{category.name}</Link></li>
+          )
+        }
+      </Categories>
+      <h1 className='text-center mb-1'>{article.title}</h1>
+      <AuthorInfo>
+        {article.author && (
+          <>
+            {
+              article.author.picture && article.author.picture.childImageSharp &&
+              <Img fixed={article.author.picture.childImageSharp.fixed} />
+            }
+            <div className='authorName'><Link to={`/writer/${article.author.slug}`}>{article.author.name}</Link></div>
+          </>
+        )}
+        <div className='publishedAt'>{dayjs(article.publishedAt).format('MMM D, YYYY')}</div>
+      </AuthorInfo>
 
-            <Img fluid={article.image.childImageSharp.fluid} />
-            <ArticleContent>
-                <Markdown source={article.content} escapeHtml={false} />
-            </ArticleContent>
-        </Layout>
-    );
+      {article.image && article.image.childImageSharp && (
+        <Img fluid={article.image.childImageSharp.fluid} />
+      )}
+
+      <ArticleContent>
+        <Markdown source={article.content} escapeHtml={false} />
+      </ArticleContent>
+    </Layout>
+  );
 };
 
 const AuthorInfo = styled.header`

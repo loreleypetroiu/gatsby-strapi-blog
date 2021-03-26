@@ -6,13 +6,13 @@ import ArticleList from '../components/ArticleList';
 import Pager from '../components/Pager';
 
 const ListArticles = ({ data, pageContext }) => {
-  
+
   return (
     <Layout>
       <SEO title="Blog" />
       <h2>Articles</h2>
       <ArticleList articles={data.allStrapiArticle.edges} />
-      <Pager pageContext={pageContext} />
+      {pageContext.numPages > 1 && <Pager pageContext={pageContext} />}
     </Layout>
   )
 

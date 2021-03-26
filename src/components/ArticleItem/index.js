@@ -8,13 +8,16 @@ const Article = ({ article }) => {
     return (
         <ArticleItem>
             <Link to={`/article/${article.slug}`}>
-                <ArticleImg>
-                    <ArticleImgInner>
-                        <Img fluid={article.image.childImageSharp.fluid} />
-                    </ArticleImgInner>
-                </ArticleImg>
+                {article.image && article.image.childImageSharp && (
+                    <ArticleImg>
+                        <ArticleImgInner>
+                            <Img fluid={article.image.childImageSharp.fluid} />
+                        </ArticleImgInner>
+                    </ArticleImg>
+                )}
+
                 <Meta>
-                    <span>By {article.author.name}</span>
+                    {article.author && <span>By {article.author.name}</span>}
                     <p>{dayjs(article.publishedAt).format('MMM D, YYYY')}</p>
                 </Meta>
                 <h3>{article.title}</h3>
