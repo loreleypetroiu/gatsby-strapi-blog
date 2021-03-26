@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env`,
 })
 
 
@@ -22,7 +22,7 @@ module.exports = {
     {
       resolve: "gatsby-source-strapi",
       options: {
-        apiURL: process.env.STRAPI,
+        apiURL: process.env.API_URL || "http://localhost:1337",
         contentTypes: ["article", "category", "writer"],
         singleTypes: [`homepage`, `global`],
         queryLimit: 5000,
